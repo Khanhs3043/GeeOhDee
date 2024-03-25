@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "214694957563",
+    "project_id": "deeohgee-b484e",
+    "storage_bucket": "deeohgee-b484e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214694957563:android:38ba21ef224b69121efb5e",
+        "android_client_info": {
+          "package_name": "com.example.chos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNTR1XSHyCBeIM_rsLXIcaffu2KwkdzBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
