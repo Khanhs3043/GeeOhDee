@@ -16,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context,user,child ){
         return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           actions: [IconButton(onPressed: ()async{
             Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen()));

@@ -6,7 +6,7 @@ class MyUser{
   String name;
   DateTime? dob;
   String? gender;
-
+  String? imageUrl;
   MyUser({
     required this.id,
     required this.name,
@@ -23,6 +23,7 @@ class MyUser{
       'name': name,
       'dob': dob?.toIso8601String(),
       'gender': gender,
+      'image': imageUrl,
     };
   }
 

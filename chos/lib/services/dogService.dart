@@ -9,7 +9,7 @@ class DogService {
   static const int limit = 20;
 
 
-  Future<List<Dog>> getDogBreeds(int page) async {
+  static Future<List<Dog>> getDogBreeds(int page) async {
     var url = Uri.parse('$apiUrl/breeds?limit=$limit&page=$page');
     var response = await http.get(url, headers: {'x-api-key': apiKey});
 
@@ -22,7 +22,7 @@ class DogService {
     }
   }
 
-  Future<Dog> getDogBreedById(int id) async {
+  static Future<Dog> getDogBreedById(int id) async {
     var url = Uri.parse('$apiUrl/breeds/$id');
     var response = await http.get(url, headers: {'x-api-key': apiKey});
 
@@ -33,13 +33,40 @@ class DogService {
       throw Exception('Failed to load dog breed');
     }
   }
-  Future<String?> getDogImageById(String referenceImageId) async {
+  static Future<String?> getDogImageById(String referenceImageId) async {
     var url = Uri.parse('$apiUrl/images/$referenceImageId');
     var response = await http.get(url, headers: {'x-api-key': apiKey});
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       return data['url'];
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<String>?> getDogImageByName(String name, int numOfImage) async {
+    var url = Uri.parse('https://dog.ceo/api/breed/$name/images/random/$numOfImage');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      List<dynamic> imageUrls = data['message'];
+      List<String> listStringImage = imageUrls.map((url) => url.toString()).toList();
+      return listStringImage;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<String>?> getRandomDogImage( int numOfImage) async {
+    var url = Uri.parse('https://dog.ceo/api/breeds/image/random/$numOfImage');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      List<dynamic> imageUrls = data['message'];
+      print(data);
+      List<String> listStringImage = imageUrls.map((url) => url.toString()).toList();
+      return listStringImage;
     } else {
       return null;
     }

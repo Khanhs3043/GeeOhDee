@@ -21,7 +21,6 @@ class Dog {
     this.temperament,
     this.origin,
     this.referenceImageId,
-    this.isFavorite = false,
   });
 
   Dog.fromJson(Map<String, dynamic> json) {

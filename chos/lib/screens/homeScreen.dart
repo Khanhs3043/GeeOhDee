@@ -6,11 +6,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-class HomeScreen extends StatelessWidget {
+
+import '../services/dogService.dart';
+import '../widgets/featureItem.dart';
+import 'breedsScreen.dart';
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<String>? listImage=[];
+  @override
+  void didChangeDependencies() {
+    listImage = Provider.of<UserProvider>(context,listen: false).list5Url;
+  }
+  @override
   Widget build(BuildContext context) {
+    var state = Provider.of<UserProvider>(context,listen: false).state;
     return Consumer<UserProvider>(
       builder: (context,provider,child){
       return Scaffold(
@@ -19,9 +34,9 @@ class HomeScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              Icon(Icons.pets_outlined),
+              Icon(Icons.pets_outlined,color: Colors.blueGrey,),
               const SizedBox(width: 10,),
-              Text('Hi ${provider.user?.name}!')
+              Text('Welcome ${provider.user?.name} !',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blueGrey),)
             ],
           ),
         ),
@@ -38,17 +53,20 @@ class HomeScreen extends StatelessWidget {
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 5)
                 ),
-                items: [1,2,3,4,5].map((i) {
+                items: listImage?.map((src) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(src),
+                              fit: BoxFit.cover,
+                            ),
                               color: Colors.white,
                             borderRadius: BorderRadius.circular(20)
                           ),
-                          child: Center(child: Text('image $i', style: TextStyle(fontSize: 16.0),))
                       );
                     },
                   );
@@ -70,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(width: 20,),
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>BreedsScreen()));
+                        },
                         icon: Icon(Icons.pets_outlined),
                         label: Text('Breeds'),
                       ),
@@ -90,20 +110,7 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20,bottom: 20),
                   child: Row(
                     children:
-                      [1,2,3,4,5].map((e) => Container(
-                        margin: EdgeInsets.only(right: 15),
-                        width: 150,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [BoxShadow(
-                            blurRadius: 10,
-                            offset: Offset(0,4),
-                            color: Colors.black.withOpacity(0.1)
-                          )]
-                        ),
-                      )).toList()
+                      [1,2,3,4,5].map((e) => FeatureItem()).toList()
                     ,
                   ),
                 ),
@@ -119,20 +126,7 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20,bottom: 20),
                   child: Row(
                     children:
-                    [1,2,3,4,5].map((e) => Container(
-                      margin: EdgeInsets.only(right: 15),
-                      width: 150,
-                      height: 200,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [BoxShadow(
-                              blurRadius: 10,
-                              offset: Offset(0,4),
-                              color: Colors.black.withOpacity(0.1)
-                          )]
-                      ),
-                    )).toList()
+                    [1,2,3,4,5].map((e) => FeatureItem()).toList()
                     ,
                   ),
                 ),

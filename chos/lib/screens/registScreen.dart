@@ -22,7 +22,7 @@ class RegistScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 100,),
               const Icon(Icons.pets_rounded,size: 70,color: Colors.blueGrey,),
-              const Text('GeeOhDee!', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800,color: Colors.blueGrey),),
+              const Text('DeeOhGees!', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800,color: Colors.blueGrey),),
               const SizedBox(height: 20,),
               TextField(
                 controller: nameCon,
