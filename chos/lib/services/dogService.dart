@@ -1,7 +1,5 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import '../models/dog.dart';
 import 'package:http/http.dart' as http;
 class DogService {
@@ -32,12 +30,18 @@ class DogService {
       return imageUrl;
     }
   }
-  static Future<List<Dog>?> searchDogByName(String query)async{
+  static Future<List<Dog>?> searchDogByName(String query) async {
+    print(query);
     var url = Uri.parse('https://api.thedogapi.com/v1/breeds/search?q=$query');
     var response = await http.get(url);
+
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      List<Dog>? dogs = data.map((json) => Dog.fromJson(json)).toList();
+      List<dynamic> jsonData = jsonDecode(response.body);
+      List<Dog> dogs = [];
+      jsonData.forEach((item) {
+        Dog dog = Dog.fromJson(item);
+        dogs.add(dog);
+      });
       return dogs;
     } else {
       throw Exception('Failed to load dog breeds');
@@ -122,4 +126,53 @@ class DogService {
       return null;
     }
   }
+
+
+  Icon getIconForTemperament(String temperament) {
+    switch (temperament.toLowerCase()) {
+      case 'friendly':
+        return Icon(Icons.thumb_up);
+      case 'energetic':
+        return Icon(Icons.sports_soccer);
+      case 'intelligent':
+        return Icon(Icons.lightbulb_outline);
+      case 'loyal':
+        return Icon(Icons.favorite);
+      case 'playful':
+        return Icon(Icons.toys);
+      case 'protective':
+        return Icon(Icons.security);
+      case 'alert':
+        return Icon(Icons.notifications_active);
+      case 'brave':
+        return Icon(Icons.shield);
+      case 'curious':
+        return Icon(Icons.search);
+      case 'calm':
+        return Icon(Icons.spa);
+      case 'obedient':
+        return Icon(Icons.check_circle);
+      case 'affectionate':
+        return Icon(Icons.favorite_border);
+      case 'independent':
+        return Icon(Icons.person);
+      case 'sociable':
+        return Icon(Icons.group);
+      case 'confident':
+        return Icon(Icons.sentiment_satisfied);
+      case 'patient':
+        return Icon(Icons.access_time);
+      case 'agile':
+        return Icon(Icons.directions_run);
+      case 'cheerful':
+        return Icon(Icons.mood);
+      case 'gentle':
+        return Icon(Icons.favorite_outline);
+      case 'friendly toward strangers':
+        return Icon(Icons.people_outline);
+      default:
+        return Icon(Icons.help_outline);
+    }
+  }
+
 }

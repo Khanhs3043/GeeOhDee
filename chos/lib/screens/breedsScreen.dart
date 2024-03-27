@@ -34,8 +34,10 @@ class _BreedsScreenState extends State<BreedsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffebebeb),
       appBar: AppBar(
-        backgroundColor: Color(0xffece6f3),
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xffc27335),
         centerTitle: true,
         title: Text('All breeds'),
       ),
@@ -69,6 +71,7 @@ class _BreedsScreenState extends State<BreedsScreen> {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width-100,
                       child: SearchBar(
+                        hintText: 'Searching...',
                         controller: searchController,
                         shadowColor: MaterialStatePropertyAll(Colors.black.withOpacity(0.6)),
                         onChanged: (query){

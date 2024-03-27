@@ -16,6 +16,7 @@ class DetailsScreen extends StatefulWidget {
 }
 class _DetailsScreenState extends State<DetailsScreen> {
   List<String> urls = [] ;
+  bool isFavorite = false;
   var selectedImage;
   @override
   void initState() {
@@ -117,25 +118,117 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               ),
                             ),
                             GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  isFavorite=!isFavorite;
+                                });
+                              },
                               child: Container(
                                 padding: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade200,
                                   borderRadius: BorderRadius.circular(20)
                                 ),
-                                child: Icon(Icons.favorite_border_outlined,color: Colors.pink,size: 30,),
+                                child: isFavorite?Icon(Icons.favorite,color: Colors.pink,size: 33,):Icon(Icons.favorite_border_outlined,color: Colors.pink,size: 30,),
                               ),
                             )
                           ],
                         ),
                         const SizedBox(height: 10,),
-                        Text('Weight: ${widget.dog.weight}'),
-                        Text('Height: ${widget.dog.height}'),
-                        Text('BredFor: ${widget.dog.bredFor}'),
-                        Text('BreedGroup: ${widget.dog.breedGroup}'),
-                        Text('LifeSpan: ${widget.dog.lifeSpan}'),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(10),
+                                height: 70,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xffececed),
+                                    boxShadow: [BoxShadow(offset: Offset(0,4),blurRadius: 10,color: Colors.black.withOpacity(0.2))]
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    //Icon(Icons.fitness_center,color: Colors.white,size: 30,),
+                                    Text('Weight (kg)',style: TextStyle(fontSize: 16,color: Colors.grey),),
+                                    Text('${widget.dog.weight}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.cyan),),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(10),
+                                height: 70,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xffececed),
+                                    boxShadow: [BoxShadow(offset: Offset(0,4),blurRadius: 10,color: Colors.black.withOpacity(0.2))]
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    //Icon(Icons.fitness_center,color: Colors.white,size: 30,),
+                                    Text('Height (cm)',style: TextStyle(fontSize: 16,color: Colors.grey),),
+                                    Text('${widget.dog.height}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.cyan),),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(10),
+                                height: 70,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xffececed),
+                                    boxShadow: [BoxShadow(offset: Offset(0,4),blurRadius: 10,color: Colors.black.withOpacity(0.2))]
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    //Icon(Icons.fitness_center,color: Colors.white,size: 30,),
+                                    Text('Life span',style: TextStyle(fontSize: 16,color: Colors.grey),),
+                                    Text('${widget.dog.lifeSpan?.substring(0,8)}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.cyan),),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
+                                  Text(' BredFor: ${widget.dog.bredFor}',style: TextStyle(color: Colors.grey,fontSize: 18)),
+                                ],
+                              ),
+                              const SizedBox(height: 7,),
+                              Row(
+                                children: [
+                                  Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
+                                  Text('BreedGroup: ${widget.dog.breedGroup}',style: TextStyle(color: Colors.grey,fontSize: 18)),
+                                ],
+                              ),
+                              const SizedBox(height: 7,),
+                              Row( crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
+                                  Expanded(child: Text('Temperament: ${widget.dog.temperament}',style: TextStyle(color: Colors.grey,fontSize: 18))),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-
                     ),
 
                     ]
@@ -143,14 +236,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
               )
           ),
-          Positioned(
-            bottom: 20,
-            child: ElevatedButton.icon(
-              onPressed: (){},
-              icon: Icon(Icons.favorite_border_outlined),
-              label: Text('Add to favorites list'),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 20,
+          //   child: ElevatedButton.icon(
+          //     onPressed: (){},
+          //     icon: Icon(Icons.favorite_border_outlined),
+          //     label: Text('Add to favorites list'),
+          //   ),
+          // ),
           Positioned(
             top:25,
             left: 10,
