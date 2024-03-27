@@ -32,6 +32,18 @@ class DogService {
       return imageUrl;
     }
   }
+  static Future<List<Dog>?> searchDogByName(String query)async{
+    var url = Uri.parse('https://api.thedogapi.com/v1/breeds/search?q=$query');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      List<Dog>? dogs = data.map((json) => Dog.fromJson(json)).toList();
+      return dogs;
+    } else {
+      throw Exception('Failed to load dog breeds');
+    }
+  }
+
   static Future<List<String>> getPicAboutBreed(int breedId) async {
     var url = Uri.parse('https://api.thedogapi.com/v1/images/search?breed_id=$breedId&limit=5');
     var response = await http.get(url);
