@@ -19,11 +19,17 @@ class _ControlScreenState extends State<ControlScreen> {
   var selectedIndex =0;
   var user;
   @override
-  didChangeDependencies() async{
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
     user = await DbHelper.getUserById(FirebaseAuth.instance.currentUser!.uid);
-    Provider.of<UserProvider>(context,listen: false).user = user;
+    Provider.of<UserProvider>(context, listen: false).user = user;
     await getListImage();
-    super.didChangeDependencies();
+    await getListDog();
+    setState(() {});
   }
   // void initState() {
   //   getListImage();
@@ -31,6 +37,10 @@ class _ControlScreenState extends State<ControlScreen> {
   // }
   Future getListImage()async{
     Provider.of<UserProvider>(context,listen: false).list5Url = await DogService.getRandomDogImage(5);
+    setState(() {});
+  }
+  Future getListDog() async{
+    Provider.of<UserProvider>(context,listen: false).listDog = await DogService.getDogBreeds(1);
     setState(() {});
   }
   @override
@@ -62,7 +72,10 @@ class _ControlScreenState extends State<ControlScreen> {
         },
 
       ),
-      body: user==null||Provider.of<UserProvider>(context,listen: false).list5Url!.isEmpty?const Center(child: CircularProgressIndicator(),):screens[selectedIndex],
+      body: user==null||
+          Provider.of<UserProvider>(context,listen: false).list5Url!.isEmpty ||
+          Provider.of<UserProvider>(context,listen: false).listDog!.isEmpty
+          ?const Center(child: CircularProgressIndicator(),):screens[selectedIndex],
     );
   }
 }

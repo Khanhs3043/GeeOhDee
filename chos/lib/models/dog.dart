@@ -32,7 +32,7 @@ class Dog {
     breedGroup = json['breed_group'];
     lifeSpan = json['life_span'];
     temperament = json['temperament'];
-    origin = json['origin'];
+    origin = (json['origin']==null||json['origin'].toString().isEmpty)?"No information": json['origin'];
     referenceImageId = json['reference_image_id'];
   }
 

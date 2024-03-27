@@ -8,14 +8,18 @@ class DogService {
   static const String apiKey = 'live_dSiqhOSyHmHpZoc88BgXD8jk6FhdmuYhSy07mCd1zESZ7s7LSpy1JcajPHFHXqCT';
   static const int limit = 20;
 
+  static String getImageStringByReferenceId(String id){
+    return "https://cdn2.thedogapi.com/images/$id.jpg";
+  }
 
   static Future<List<Dog>> getDogBreeds(int page) async {
-    var url = Uri.parse('$apiUrl/breeds?limit=$limit&page=$page');
-    var response = await http.get(url, headers: {'x-api-key': apiKey});
+    var url = Uri.parse('https://api.thedogapi.com/v1/breeds?limit=20');
+    var response = await http.get(url);
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       List<Dog> dogs = data.map((json) => Dog.fromJson(json)).toList();
+      print(data);
       return dogs;
     } else {
       throw Exception('Failed to load dog breeds');

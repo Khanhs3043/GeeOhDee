@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../models/dog.dart';
 import '../services/dogService.dart';
 import '../widgets/featureItem.dart';
 import 'breedsScreen.dart';
@@ -19,9 +20,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<String>? listImage=[];
+  List<Dog>? listDog =[];
   @override
   void didChangeDependencies() {
     listImage = Provider.of<UserProvider>(context,listen: false).list5Url;
+    listDog = Provider.of<UserProvider>(context,listen: false).listDog?.sublist(0,10);
   }
   @override
   Widget build(BuildContext context) {
@@ -110,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 20,bottom: 20),
                   child: Row(
                     children:
-                      [1,2,3,4,5].map((e) => FeatureItem()).toList()
+                      listDog!.map((dog) => FeatureItem(dog: dog)).toList()
                     ,
                   ),
                 ),
@@ -126,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 20,bottom: 20),
                   child: Row(
                     children:
-                    [1,2,3,4,5].map((e) => FeatureItem()).toList()
+                    listDog!.map((dog) => FeatureItem(dog: dog)).toList()
                     ,
                   ),
                 ),
