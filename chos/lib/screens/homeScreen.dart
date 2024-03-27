@@ -20,14 +20,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String>? listImage=[];
   List<Dog>? listDog =[];
+  List<Dog>? listDog2 =[];
   List<Dog>? list4Carousel = [];
   @override
   void initState() {
     super.initState();
-    listImage = Provider.of<UserProvider>(context,listen: false).list5Url;
     listDog = Provider.of<UserProvider>(context,listen: false).listDog?.sublist(0,10);
+    listDog2 = Provider.of<UserProvider>(context,listen: false).listDog?.sublist(10,19);
     List<Dog>? shuffleList = listDog;
     shuffleList?.shuffle();
     list4Carousel = shuffleList?.sublist(0,5);
@@ -101,6 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen()));
                         },
+                        style: ButtonStyle(
+                           backgroundColor: MaterialStatePropertyAll(Color(
+                               0xffbcbcbc)),
+                            foregroundColor: MaterialStatePropertyAll(Color(0xffffffff))
+                        ),
                         icon: Icon(Icons.search),
                         label: Text('Search'),
                       ),
@@ -108,6 +113,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(width: 20,),
                     Expanded(
                       child: ElevatedButton.icon(
+                        style: ButtonStyle(
+                         backgroundColor: MaterialStatePropertyAll(Color(
+                             0xff987755)),
+                          foregroundColor: MaterialStatePropertyAll(Color(0xffffffff))
+                        ),
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>BreedsScreen()));
                         },
@@ -130,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 20,bottom: 20),
                   child: Row(
                     children:
-                      listDog!.map((dog) => FeatureItem(dog: dog)).toList()
+                      listDog2!.map((dog) => FeatureItem(dog: dog)).toList()
                     ,
                   ),
                 ),

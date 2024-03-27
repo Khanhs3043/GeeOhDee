@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:chos/models/favoriteDog.dart';
+import 'package:chos/services/dbHelper.dart';
 import 'package:chos/services/dogService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -118,9 +121,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async{
+                                await DbHelper.addFavorite(FavoriteDog( dog: widget.dog, userId: FirebaseAuth.instance.currentUser!.uid));
+                                var list = await DbHelper.getListFavoriteDog(FirebaseAuth.instance.currentUser!.uid);
+                                print(list);
+                                isFavorite=!isFavorite;
                                 setState(() {
-                                  isFavorite=!isFavorite;
+
                                 });
                               },
                               child: Container(
@@ -205,10 +212,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
+                              Row(crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
-                                  Text(' BredFor: ${widget.dog.bredFor}',style: TextStyle(color: Colors.grey,fontSize: 18)),
+                                  Expanded(child: Text(' BredFor: ${widget.dog.bredFor}',style: TextStyle(color: Colors.grey,fontSize: 18))),
                                 ],
                               ),
                               const SizedBox(height: 7,),

@@ -20,7 +20,7 @@ class FeatureItem extends StatelessWidget {
         margin: EdgeInsets.only(right: 15),
         padding: EdgeInsets.all(15),
         width: 150,
-        height: 220,
+        height: 200,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -30,7 +30,7 @@ class FeatureItem extends StatelessWidget {
                 color: Colors.black.withOpacity(0.1)
             )]
         ),
-        child: Stack(
+        child: Column(
           children: [Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,7 +49,7 @@ class FeatureItem extends StatelessWidget {
               Text('${dog.name}',style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold
-              ),),
+              ),overflow: TextOverflow.ellipsis,),
               //const SizedBox(height: 10,),
 
             ],
