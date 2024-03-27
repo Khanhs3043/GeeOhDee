@@ -1,16 +1,20 @@
 import 'dart:math';
 
 import 'package:chos/screens/detailsScreen.dart';
+import 'package:chos/services/dogService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-class BreedItem extends StatelessWidget {
-  const BreedItem({super.key});
+import 'package:flutter/widgets.dart';
 
+import '../models/dog.dart';
+class BreedItem extends StatelessWidget {
+   BreedItem({super.key,required this.dog});
+  Dog dog;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(dog: dog,)));
       },
       child: Container(
         margin: EdgeInsets.only(top: 15,left: 20,right: 20),
@@ -32,7 +36,10 @@ class BreedItem extends StatelessWidget {
                 height: 130,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.blueGrey
+                  color: Colors.blueGrey,
+                  image: DecorationImage(
+                      image: NetworkImage(DogService.getImageStringByReferenceId(dog.referenceImageId!)),
+                      fit: BoxFit.cover)
                 ),
               ),
             ),
@@ -43,23 +50,26 @@ class BreedItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Shiba inu',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                    Text('${dog.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Height',style: TextStyle(color: Colors.grey,fontSize: 16),),
-                        Text('80-120',style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text('${dog.height} cm',style: TextStyle(color: Colors.black,fontSize: 16),),
                       ],
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Weight',style: TextStyle(color: Colors.grey,fontSize: 16),),
-                        Text('12-22',style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text('${dog.weight} kg',style: TextStyle(color: Colors.black,fontSize: 16),),
                       ],
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Origin',style: TextStyle(color: Colors.grey,fontSize: 16),),
-                        Text('Japan',style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Text('Origin',style: TextStyle(color: Colors.grey,fontSize: 16),),
+                        ),
+                        Expanded(child: Text('${dog.origin}',style: TextStyle(color: Colors.black,fontSize: 16,overflow: TextOverflow.ellipsis),textDirection: TextDirection.rtl,)),
                       ],
                     )
                   ],

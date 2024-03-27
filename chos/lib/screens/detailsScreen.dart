@@ -1,26 +1,38 @@
+import 'dart:async';
+
+import 'package:chos/services/dogService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key});
+import '../models/dog.dart';
 
+class DetailsScreen extends StatefulWidget {
+   DetailsScreen({super.key, required this.dog});
+  Dog dog;
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
 }
-
 class _DetailsScreenState extends State<DetailsScreen> {
-  var urls = ["https:\/\/images.dog.ceo\/breeds\/shiba\/shiba-13.jpg",
-    "https:\/\/images.dog.ceo\/breeds\/shiba\/shiba-19.jpg",
-    "https:\/\/images.dog.ceo\/breeds\/shiba\/shiba-3i.jpg",
-    "https:\/\/images.dog.ceo\/breeds\/shiba\/shiba-4.jpg",
-    "https:\/\/images.dog.ceo\/breeds\/shiba\/shiba-6.jpg"];
-  var selectedImage = 0;
+  List<String> urls = [] ;
+  var selectedImage;
   @override
+  void initState() {
+    getPic();
+    super.initState();
+  }
+  Future getPic()async{
+    urls = [DogService.getImageStringByReferenceId(widget.dog.referenceImageId!)];
+    selectedImage = urls[0];
+    List<String> listPic = await DogService.getPicAboutBreed(widget.dog.id!);
+    urls.addAll(listPic);
+    print(urls);
+    setState(() {});
+  }
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return urls==null?CircularProgressIndicator():Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -30,7 +42,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 height: MediaQuery.sizeOf(context).height/2,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
-                    image: DecorationImage(image:NetworkImage(urls[selectedImage]),fit:BoxFit.cover ),
+                    image: DecorationImage(image:NetworkImage(selectedImage),fit:BoxFit.cover ),
                     color: Colors.grey
                 ),
               )
@@ -55,7 +67,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     children: [Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Center(child: Text('More pictures of shiba',style: TextStyle(fontSize: 18,color: Colors.grey),)),
+                         Center(child: Text('More pictures of ${widget.dog.name}',style: TextStyle(fontSize: 18,color: Colors.grey),)),
                         const SizedBox(height: 15,),
                          Container(
 
@@ -63,11 +75,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                            child: SingleChildScrollView(
                              scrollDirection: Axis.horizontal,
                              child: Row(
-                               children: [0,1,2,3,4].map(
-                                       (index) => GestureDetector(
+                               children: urls.map(
+                                       (url) => GestureDetector(
                                          onTap: (){
                                            setState(() {
-                                                  selectedImage = index;
+                                                  selectedImage = url;
                                            });
                                          },
                                          child: Container(
@@ -76,7 +88,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                            margin: EdgeInsets.only(right: 15),
                                            decoration: BoxDecoration(
                                                borderRadius: BorderRadius.circular(10),
-                                               image: DecorationImage(image: NetworkImage(urls[index]),
+                                               image: DecorationImage(image: NetworkImage(url),
                                                fit: BoxFit.cover)
                                            ),
                                          ),
@@ -88,18 +100,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         const SizedBox(height: 20,),
 
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Shiba inu',
-                                  style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
-                                Row(
-                                  children: [
-                                    Icon(Icons.place_outlined,color: Colors.blueGrey,),
-                                    Text('Japan',style: TextStyle(fontSize: 20),),
-                                  ],
-                                ),
-                              ],
+                            Expanded(
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${widget.dog.name}',
+                                    style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,),),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.place_outlined,color: Colors.blueGrey,),
+                                      Text('${widget.dog.origin}',style: TextStyle(fontSize: 20),),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             GestureDetector(
                               child: Container(
@@ -114,11 +129,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ],
                         ),
                         const SizedBox(height: 10,),
-                        Text('weight: 12-15'),
-                        Text('height: 100-120'),
-                        Text('bredFor: 100-120'),
-                        Text('breedGroup: 100-120'),
-                        Text('lifeSpan: 100-120'),
+                        Text('Weight: ${widget.dog.weight}'),
+                        Text('Height: ${widget.dog.height}'),
+                        Text('BredFor: ${widget.dog.bredFor}'),
+                        Text('BreedGroup: ${widget.dog.breedGroup}'),
+                        Text('LifeSpan: ${widget.dog.lifeSpan}'),
                       ],
 
                     ),

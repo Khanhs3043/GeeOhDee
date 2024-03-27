@@ -27,7 +27,7 @@ class _ControlScreenState extends State<ControlScreen> {
   void loadData() async {
     user = await DbHelper.getUserById(FirebaseAuth.instance.currentUser!.uid);
     Provider.of<UserProvider>(context, listen: false).user = user;
-    await getListImage();
+    //await getListImage();
     await getListDog();
     setState(() {});
   }
@@ -35,12 +35,12 @@ class _ControlScreenState extends State<ControlScreen> {
   //   getListImage();
   //   super.initState();
   // }
-  Future getListImage()async{
-    Provider.of<UserProvider>(context,listen: false).list5Url = await DogService.getRandomDogImage(5);
-    setState(() {});
-  }
+  // Future getListImage()async{
+  //   Provider.of<UserProvider>(context,listen: false).list5Url = await DogService.getRandomDogImage(5);
+  //   setState(() {});
+  // }
   Future getListDog() async{
-    Provider.of<UserProvider>(context,listen: false).listDog = await DogService.getDogBreeds(1);
+    Provider.of<UserProvider>(context,listen: false).listDog = await DogService.getDogBreeds();
     setState(() {});
   }
   @override
@@ -50,10 +50,10 @@ class _ControlScreenState extends State<ControlScreen> {
       backgroundColor: Color(0xffededed),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
-        backgroundColor: Colors.grey,
+        backgroundColor: Color(0xfaffffff),
         currentIndex: selectedIndex,
-        selectedItemColor: Colors.pink,
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Color(0xfad26339),
+        unselectedItemColor: Color(0xfa8a8a8a),
         items: [
           BottomNavigationBarItem(
               label: 'Home',
@@ -73,7 +73,7 @@ class _ControlScreenState extends State<ControlScreen> {
 
       ),
       body: user==null||
-          Provider.of<UserProvider>(context,listen: false).list5Url!.isEmpty ||
+          //Provider.of<UserProvider>(context,listen: false).list5Url!.isEmpty ||
           Provider.of<UserProvider>(context,listen: false).listDog!.isEmpty
           ?const Center(child: CircularProgressIndicator(),):screens[selectedIndex],
     );

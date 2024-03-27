@@ -21,10 +21,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<String>? listImage=[];
   List<Dog>? listDog =[];
+  List<Dog>? list4Carousel = [];
   @override
-  void didChangeDependencies() {
+  void initState() {
+    super.initState();
     listImage = Provider.of<UserProvider>(context,listen: false).list5Url;
     listDog = Provider.of<UserProvider>(context,listen: false).listDog?.sublist(0,10);
+    List<Dog>? shuffleList = listDog;
+    shuffleList?.shuffle();
+    list4Carousel = shuffleList?.sublist(0,5);
   }
   @override
   Widget build(BuildContext context) {
@@ -56,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 5)
                 ),
-                items: listImage?.map((src) {
+                items: list4Carousel?.map((dog) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -64,12 +69,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(src),
+                              image: NetworkImage(DogService.getImageStringByReferenceId(dog.referenceImageId!)),
                               fit: BoxFit.cover,
                             ),
                               color: Colors.white,
                             borderRadius: BorderRadius.circular(20)
                           ),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 10,right: 20),
+                              child: Text('${dog.name}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30, color: Colors.white),textDirection: TextDirection.rtl,),
+                            )),
                       );
                     },
                   );
