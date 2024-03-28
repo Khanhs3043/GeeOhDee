@@ -23,9 +23,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
   var selectedImage;
   @override
   void initState() {
+    checkFavorite();
     getPic();
     super.initState();
   }
+  Future<void> checkFavorite()async{
+    isFavorite = await DbHelper.isFavoriteExist(widget.dog.id!,  FirebaseAuth.instance.currentUser!.uid);
+    setState(() {
+
+    });
+  }
+
   Future getPic()async{
     urls = [DogService.getImageStringByReferenceId(widget.dog.referenceImageId!)];
     selectedImage = urls[0];
@@ -122,13 +130,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ),
                             GestureDetector(
                               onTap: ()async{
-                                await DbHelper.addFavorite(FavoriteDog( dog: widget.dog, userId: FirebaseAuth.instance.currentUser!.uid));
-                                var list = await DbHelper.getListFavoriteDog(FirebaseAuth.instance.currentUser!.uid);
-                                print(list);
-                                isFavorite=!isFavorite;
-                                setState(() {
-
-                                });
+                                bool exist = await DbHelper.isFavoriteExist(widget.dog.id!,  FirebaseAuth.instance.currentUser!.uid);
+                                if (exist){
+                                  await DbHelper.removeFavorite(widget.dog.id!,  FirebaseAuth.instance.currentUser!.uid);
+                                  isFavorite = false;
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text('Unfavorited!')));
+                                }else{
+                                  await DbHelper.addFavorite(FavoriteDog( dog: widget.dog, userId: FirebaseAuth.instance.currentUser!.uid));
+                                  isFavorite = true;
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text('Favorited!')));
+                                }
+                                setState(() {});
                               },
                               child: Container(
                                 padding: EdgeInsets.all(15),

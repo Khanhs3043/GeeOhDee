@@ -9,7 +9,6 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   Platform.isAndroid ?
   await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -48,7 +47,7 @@ class _DeeOhGeeState extends State<DeeOhGee> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        // Đưa các provider khác vào đây nếu cần
+
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

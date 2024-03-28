@@ -12,24 +12,38 @@ class DbHelper {
         'dog.db',
         version: 1,
         onCreate: (Database database, int version) async {
+          //await updateTableStructure(database);
+
           await createTable(database);
+          print('jjjj drop');
         }
     );
   }
-  // static Future<void> updateTableStructure(Database db) async {
-  //   await db.execute('DROP TABLE IF EXISTS favorites');
-  //   //await db.execute('CREATE TABLE favorites (id INTEGER PRIMARY KEY, dogId INTEGER, userId TEXT)');
-  // }
+  static Future<void> updateTableStructure(Database db) async {
+    await db.execute('DROP TABLE if exists favorites');
+    //await db.execute('CREATE TABLE favorites (id INTEGER PRIMARY KEY, dogId INTEGER, userId TEXT)');
+  }
   static Future<void> createTable(Database database) async {
     await database.execute('''
     
           CREATE TABLE IF NOT EXISTS FAVORITES (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        DogId INTEGER,
-        UserId TEXT,
-        FOREIGN KEY (UserId) REFERENCES users(id)
+         id INTEGER PRIMARY KEY AUTOINCREMENT,
+      dogId INTEGER ,
+      userId TEXT ,
+      weight TEXT,
+      height TEXT,
+      name TEXT,
+      bred_for TEXT,
+      breed_group TEXT,
+      life_span TEXT,
+      temperament TEXT,
+      origin TEXT,
+      reference_image_id TEXT,
+      FOREIGN KEY (userId) REFERENCES users(id)
       )
     ''');
+
+
     await database.execute('''
           CREATE TABLE IF NOT EXISTS USERS (
         Id TEXT PRIMARY KEY,
@@ -86,15 +100,15 @@ class DbHelper {
   // about favorite------------------------------------------------------------------
   static Future<int> addFavorite(FavoriteDog favoriteDog)async{
     Database db = await mDatabase();
-    var id = await db.insert('favorites', favoriteDog.toMap(),
+    var id = await db.insert('FAVORITES', favoriteDog.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    // var list = await getFavorites(id);
-    // print(list);
+     var list = await getFavorites(id);
+     print('$list dgdddddddddddddđ');
     return id;
   }
   static Future<void> removeFavorite(int dogId,String userId)async{
     Database db = await mDatabase();
-    await db.delete("favorites",
+    await db.delete("FAVORITES",
       where: 'dogId = ? AND userId = ?',
       whereArgs: [dogId, userId],);
   }
@@ -103,18 +117,13 @@ class DbHelper {
     List<Dog> dogs= [];
     try {
       var list = await db.query(
-        'favorites',
+        'FAVORITES',
         where: 'userId = ?',
         whereArgs: [userId],
       );
-
       for (var item in list) {
-        int dogId = item['DogId'] as int;
-
-        Dog? dog = await DogService.getDogBreedById(dogId); print(dog);
-        if (dog != null) {
-          dogs.add(dog);
-        }
+        FavoriteDog favoriteDog = FavoriteDog.fromJson(item);
+        dogs.add(favoriteDog.dog);
       }
     } catch (e) {
       print('Error fetching favorite dogs: $e');
@@ -124,9 +133,17 @@ class DbHelper {
   }
   static Future<List<dynamic>> getFavorites(int id)async{
     Database db = await mDatabase();
-    var list = db.query('favorites',
+    var list = db.query('FAVORITES',
       where: 'Id = ?',
       whereArgs: [id],);
     return list;
+  }
+  static Future<bool> isFavoriteExist(int dogId, String userId) async {
+    Database db = await mDatabase();
+    var count = Sqflite.firstIntValue(await db.rawQuery(
+      'SELECT COUNT(*) FROM FAVORITES WHERE dogId = ? AND userId = ?',
+      [dogId, userId],
+    ));
+    return count! > 0;
   }
 }

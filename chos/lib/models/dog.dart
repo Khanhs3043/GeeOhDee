@@ -35,6 +35,18 @@ class Dog {
     origin = (json['origin']==null||json['origin'].toString().isEmpty)?"No information": json['origin'];
     referenceImageId = json['reference_image_id'];
   }
+  Dog.fromJson2(Map<String, dynamic> json) {
+    weight = json['weight'];
+    height = json['height'];
+    id = json['dogId'];
+    name = json['name'];
+    bredFor = json['bred_for'];
+    breedGroup = json['breed_group'];
+    lifeSpan = json['life_span'];
+    temperament = json['temperament'];
+    origin = (json['origin']==null||json['origin'].toString().isEmpty)?"No information": json['origin'];
+    referenceImageId = json['reference_image_id'];
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

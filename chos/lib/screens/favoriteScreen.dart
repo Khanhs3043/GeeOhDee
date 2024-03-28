@@ -19,7 +19,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
   loadData()async{
     dogs = await DbHelper.getListFavoriteDog(FirebaseAuth.instance.currentUser!.uid);
-    print(dogs);
+    for(var i in dogs!)
+    print(i.id);
     setState(() {
     });
   }
@@ -27,8 +28,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: dogs==null?Center(child: CircularProgressIndicator()):Column(
-        children: dogs!.map((e) => BreedItem(dog: e)).toList(),
+      body: SingleChildScrollView(
+        child: dogs==null?Center(child: CircularProgressIndicator()):Column(
+          children: dogs!.map((e) => BreedItem(dog: e)).toList(),
+        ),
       ),
     );
   }
