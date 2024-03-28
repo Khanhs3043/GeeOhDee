@@ -23,7 +23,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     user = Provider.of<UserProvider>(context,listen:false).user;
     selectedGender = user?.gender ?? 'Female';
     nameCon.text = user!.name;
-    dateOfBirth = user.dob;
+    dateOfBirth = user.dob?? DateTime.now();
     super.initState();
   }
   Widget build(BuildContext context) {
