@@ -1,12 +1,14 @@
-import 'package:chos/models/myUser.dart';
+import 'dart:io';
 import 'package:chos/providers/userProvider.dart';
 import 'package:chos/screens/loginScreen.dart';
-import 'package:chos/screens/settingScreen.dart';
+import 'package:chos/services/dbHelper.dart';
 import 'package:chos/services/fb_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'editProfileScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,9 +21,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var nameCon = TextEditingController();
   var genderCon =   TextEditingController();
   var selectedGender = 'Female';
+  String ava='';
   @override
   Widget build(BuildContext context) {
+
     return Consumer<UserProvider>(
+
       builder: (context,user,child ){
         nameCon.text = user.user!.name;
         return Scaffold(
@@ -35,56 +40,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               Align(alignment: Alignment.center,
-                  child: CircleAvatar(radius: 60,)),
-              Text('${user.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                  child: Stack(
+                    children: [CircleAvatar(radius: 60,
+                    backgroundImage: FileImage(File(user.user?.imageUrl??'')),
+                    ),
+                      Positioned(
+                        bottom:-10,
+                          right:-10,
+                          child: IconButton(onPressed: ()async{
+                            final picker = ImagePicker();
+                            final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+                            showDialog(context: context, builder: (context)=>AlertDialog(
+                              title: null,
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [TextButton(onPressed: ()async{
+                                 await DbHelper.updateAvatar(user.user!, pickedImage!.path);
+                                  user.user = await DbHelper.getUserById(user.user!.id);
+                                  setState(() {
+                                    ava = pickedImage!.path;
+                                  });
+                                  Navigator.pop(context);
+                                }, child: Text('Save',style: TextStyle(color: Colors.blue,fontSize: 20),)),
+                                  Container(height:40,width: 2,color: Colors.grey.shade400,),
+                                  TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.grey,fontSize: 20),))],
+                              ),
+                            ));
+                          }, icon: const Icon(Icons.camera_alt,size: 30,color: Colors.grey,)))
+                    ]
+                  )),
+              Text('${user.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
               const SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   mText(text: 'Personal information'),
                   TextButton(onPressed: (){
-                    showModalBottomSheet(context: context,
-                        builder: (context)=>Container(
-                          height: 500,
-                          width: MediaQuery.sizeOf(context).width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                TextField(
-                                  controller:nameCon,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    hintText: 'Name'
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Gender'),
-                                    DropdownButton<String>(
-                                      value: selectedGender,
-                                        items: [
-                                      DropdownMenuItem<String>(child: Text('Female'),value: 'Female',),
-                                      DropdownMenuItem<String>(child: Text('Male'),value: 'Male',),
-                                      DropdownMenuItem<String>(child: Text('Other'),value: 'Other',),
-                                    ], onChanged: <String>(val){
-                                        setState(() {
-                                          selectedGender = val;
-                                        });
-                                    })
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfileScreen()));
                   },
                       child: Text('Edit',style: TextStyle(color: Colors.blue,fontSize: 18),))
                 ],
@@ -130,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         mText(text: 'Date of birth',color: Colors.black,),
-                        mText(text: '${user.user?.dob}',),
+                        mText(text: user.user?.dob==null?'No information':'${DateFormat('dd/MM/yyy').format(user.user!.dob!)}',),
                       ],
                     ),
                   ],

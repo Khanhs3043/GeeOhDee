@@ -51,11 +51,15 @@ class DbHelper {
         Password TEXT,
         Name TEXT ,
         Dob TEXT ,
-        Gender TEXT 
+        Gender TEXT ,
+        Image Text
       )
     ''');
   }
-
+  static Future<void> addImageColumn() async {
+    final Database db = await mDatabase();
+    await db.execute('ALTER TABLE USERS ADD COLUMN Image TEXT');
+  }
 // Thêm một người dùng mới vào bảng
   static Future<void> createUser(MyUser user) async {
     Database db = await mDatabase();
@@ -70,7 +74,6 @@ class DbHelper {
       where: 'Id = ?',
       whereArgs: [id],
     );
-
     if (maps.isEmpty) {
       return null;
     }
@@ -86,6 +89,19 @@ class DbHelper {
       where: 'Id = ?',
       whereArgs: [user.id],
     );
+  }
+  static Future<void> updateAvatar(MyUser user, String url) async {
+    try {
+      final Database db = await mDatabase();
+      await db.update(
+        'USERS',
+        {'Image': url},
+        where: 'Id = ?',
+        whereArgs: [user.id],
+      );
+    } catch (e) {
+      print('Error updating avatar: $e');
+    }
   }
 
   // Xóa người dùng khỏi bảng dựa trên ID
@@ -103,7 +119,6 @@ class DbHelper {
     var id = await db.insert('FAVORITES', favoriteDog.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
      var list = await getFavorites(id);
-     print('$list dgdddddddddddddđ');
     return id;
   }
   static Future<void> removeFavorite(int dogId,String userId)async{
