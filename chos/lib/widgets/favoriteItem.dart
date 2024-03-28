@@ -35,12 +35,16 @@ class FavoriteItem extends StatelessWidget {
           onLongPress: (){
             showDialog(context: context, builder: (context)=>AlertDialog(
               title: null,
-              actions: [TextButton(onPressed: ()async{
-                await DbHelper.removeFavorite(dog.id!, FirebaseAuth.instance.currentUser!.uid);
-                onDelete();
-                Navigator.pop(context);
-              }, child: Text('Delete',style: TextStyle(color: Colors.red),)),
-                TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.grey),))],
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [TextButton(onPressed: ()async{
+                  await DbHelper.removeFavorite(dog.id!, FirebaseAuth.instance.currentUser!.uid);
+                  onDelete();
+                  Navigator.pop(context);
+                }, child: Text('Delete',style: TextStyle(color: Colors.red,fontSize: 20),)),
+                  Container(height:40,width: 2,color: Colors.grey.shade400,),
+                  TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.grey,fontSize: 20),))],
+              ),
             ));
           },
           child: Container(
