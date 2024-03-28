@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chos/models/favoriteDog.dart';
+import 'package:chos/providers/userProvider.dart';
 import 'package:chos/services/dbHelper.dart';
 import 'package:chos/services/dogService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../models/dog.dart';
 
@@ -134,6 +136,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 if (exist){
                                   await DbHelper.removeFavorite(widget.dog.id!,  FirebaseAuth.instance.currentUser!.uid);
                                   isFavorite = false;
+                                  Provider.of<UserProvider>(context,listen: false).change();
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       content: Text('Unfavorited!')));
                                 }else{
@@ -274,7 +277,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
             color: Colors.white,
             icon: Icon(Icons.arrow_back,size: 30,),
-            onPressed: (){Navigator.pop(context);},))
+            onPressed: (){Navigator.pop(context,isFavorite);},))
         ],
       ),
     );

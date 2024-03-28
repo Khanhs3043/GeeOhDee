@@ -29,7 +29,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
     return Consumer<UserProvider>(
       builder: (context,provider,child){
-
+      var a = provider.state;
       return Scaffold(
         body: Container(
           width: MediaQuery.sizeOf(context).width,
@@ -45,13 +45,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                provider.state?SizedBox():SizedBox(),
+                //provider.state?SizedBox():SizedBox(),
                 const SizedBox(height: 50,),
                 Text('Your favorite',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
                 dogs==null?Center(child: CircularProgressIndicator()):Center(
                   child: Wrap(
                     spacing: 20,
-                    children: dogs!.map((e) => FavoriteItem(dog: e)).toList(),
+                    children: dogs!.map((e) => FavoriteItem(dog: e,onDelete: (){loadData();},)).toList(),
                   ),
                 ),
               ],

@@ -10,8 +10,9 @@ import 'package:provider/provider.dart';
 
 import '../models/dog.dart';
 class FavoriteItem extends StatelessWidget {
-   FavoriteItem({super.key, required this.dog});
+   FavoriteItem({super.key, required this.dog,required this.onDelete});
    Dog dog;
+   final VoidCallback onDelete;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,15 +30,14 @@ class FavoriteItem extends StatelessWidget {
       child: Center(
         child: GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(dog: dog)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(dog: dog))).then((canRebuild) => onDelete());
           },
           onLongPress: (){
             showDialog(context: context, builder: (context)=>AlertDialog(
               title: null,
               actions: [TextButton(onPressed: ()async{
                 await DbHelper.removeFavorite(dog.id!, FirebaseAuth.instance.currentUser!.uid);
-                Provider.of<UserProvider>(context,listen: false).state = true;
-                Provider.of<UserProvider>(context,listen: false).change();
+                onDelete();
                 Navigator.pop(context);
               }, child: Text('Delete',style: TextStyle(color: Colors.red),)),
                 TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.grey),))],
