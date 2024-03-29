@@ -239,14 +239,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               Row(
                                 children: [
                                   Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
-                                  Text('BreedGroup: ${widget.dog.breedGroup}',style: TextStyle(color: Colors.grey,fontSize: 18)),
+                                  Text(' BreedGroup: ${widget.dog.breedGroup}',style: TextStyle(color: Colors.grey,fontSize: 18)),
                                 ],
                               ),
                               const SizedBox(height: 7,),
                               Row( crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(Icons.pets_rounded,color: Colors.brown.shade400,),
-                                  Expanded(child: Text('Temperament: ${widget.dog.temperament}',style: TextStyle(color: Colors.grey,fontSize: 18))),
+                                  Expanded(child: Text(' Temperament: ${widget.dog.temperament}',style: TextStyle(color: Colors.grey,fontSize: 18))),
                                 ],
                               ),
                             ],

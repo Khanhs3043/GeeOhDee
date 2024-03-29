@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              Icon(Icons.pets_outlined,color: Colors.blueGrey,),
+              Icon(Icons.pets_outlined,color: Colors.brown,),
               const SizedBox(width: 10,),
               Text('Welcome ${provider.user?.name} !',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blueGrey),)
             ],

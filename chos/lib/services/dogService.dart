@@ -65,7 +65,7 @@ class DogService {
   static Future<List<Dog>> getDogBreeds() async {
     var url = Uri.parse('https://api.thedogapi.com/v1/breeds?page=$page&limit=$limit');
     var response = await http.get(url);
-
+    print(response);
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       List<Dog> dogs = data.map((json) => Dog.fromJson(json)).toList();

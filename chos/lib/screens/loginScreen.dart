@@ -1,8 +1,10 @@
 
 import 'package:chos/screens/controlScreen.dart';
 import 'package:chos/screens/registScreen.dart';
+import 'package:chos/screens/sendEmailScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../services/fb_auth.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -47,8 +49,13 @@ class LoginScreen extends StatelessWidget {
                 prefixIcon:  Icon(Icons.lock_open_outlined),
               ),
             ),
-
-            const SizedBox(height: 30,),
+            const SizedBox(height: 5,),
+            Align(
+              alignment: Alignment.centerLeft,
+                child: GestureDetector(onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SendEmailScreen()));
+                }, child: Text('Fogot password?',style: TextStyle(fontSize: 16, color: Colors.blue),))),
+            const SizedBox(height: 20,),
             GestureDetector(
               onTap: ()async{
                 User? user = await auth.loginUserWithEmailAndPassword(

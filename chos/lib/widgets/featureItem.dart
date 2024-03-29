@@ -58,8 +58,8 @@ class FeatureItem extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               child: Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.place_outlined,color: Colors.blueGrey,),
-                  Expanded(child: Text('${dog.origin}',style: TextStyle(fontSize: 16),overflow: TextOverflow.ellipsis,)),
+                  Icon(Icons.pets_sharp,color: Colors.brown,size: 20,),
+                  Expanded(child: Text(' ${dog.breedGroup}',style: TextStyle(fontSize: 16),overflow: TextOverflow.ellipsis,)),
                 ],
               ),
             )
