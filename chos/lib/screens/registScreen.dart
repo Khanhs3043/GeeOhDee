@@ -4,15 +4,23 @@ import 'package:chos/services/fb_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'loginScreen.dart';
-class RegistScreen extends StatelessWidget {
+class RegistScreen extends StatefulWidget {
    const RegistScreen({super.key});
+
+  @override
+  State<RegistScreen> createState() => _RegistScreenState();
+}
+
+class _RegistScreenState extends State<RegistScreen> {
+  var auth = FirebaseAuthService();
+  var passCon = TextEditingController();
+  var emailCon =  TextEditingController();
+  var nameCon = TextEditingController();
+  var confirmCon =  TextEditingController();
+  bool hidePass =  true;
+  bool hideConfirm = true;
   @override
   Widget build(BuildContext context) {
-    var auth = FirebaseAuthService();
-    var passCon = TextEditingController();
-    var emailCon =  TextEditingController();
-    var nameCon = TextEditingController();
-    var confirmCon =  TextEditingController();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -35,7 +43,7 @@ class RegistScreen extends StatelessWidget {
                   prefixIcon:  Icon(Icons.medical_information_outlined),
                 ),
               ),
-          
+
               const SizedBox(height: 15,),
               TextField(
                 controller: emailCon,
@@ -50,6 +58,7 @@ class RegistScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15,),
               TextField(
+                obscureText: hidePass,
                 controller: passCon,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -57,13 +66,20 @@ class RegistScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   hintText: 'Password ',
-                  prefixIcon:  Icon(Icons.lock_open_outlined),
+                  prefixIcon:Icon(Icons.lock_open_outlined),
+                  suffixIcon:hidePass?GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        hidePass = !hidePass;
+                      });
+                    },
+                      child: Icon(Icons.visibility_off)):Icon(Icons.remove_red_eye),
                 ),
               ),
               const SizedBox(height: 15,),
               TextField(
                 controller: confirmCon,
-          
+                obscureText: hideConfirm,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.blue),
@@ -71,6 +87,13 @@ class RegistScreen extends StatelessWidget {
                   ),
                   hintText: 'Confirm password ',
                   prefixIcon:  Icon(Icons.lock_open_outlined),
+                  suffixIcon:hideConfirm?GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          hideConfirm = !hideConfirm;
+                        });
+                      },
+                      child: Icon(Icons.visibility_off)):Icon(Icons.remove_red_eye),
                 ),
               ),
               const SizedBox(height: 30,),
@@ -88,9 +111,9 @@ class RegistScreen extends StatelessWidget {
                     } else{
                   User? user = await auth.registerUserWithEmailAndPassword(
                       emailCon.text, passCon.text);
-          
+
                   if (user != null) {
-          
+
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Đã đăng ký thành công."),
                     ));

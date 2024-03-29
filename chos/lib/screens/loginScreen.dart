@@ -6,15 +6,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../services/fb_auth.dart';
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
-
   @override
-  Widget build(BuildContext context) {
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool hide = true;
   var auth = FirebaseAuthService();
   var passCon = TextEditingController();
   var emailCon =  TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+
   return Scaffold(
     body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -39,14 +45,23 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 15,),
             TextField(
+              obscureText: hide,
               controller: passCon,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
+
                   borderSide: const BorderSide(color: Colors.blue),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: 'Password ',
                 prefixIcon:  Icon(Icons.lock_open_outlined),
+                suffixIcon: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      hide = !hide;
+                    });
+                  },
+                    child: hide?Icon(Icons.visibility_off):Icon(Icons.remove_red_eye))
               ),
             ),
             const SizedBox(height: 5,),
@@ -109,4 +124,4 @@ class LoginScreen extends StatelessWidget {
     ),
   );
   }
-  }
+}
