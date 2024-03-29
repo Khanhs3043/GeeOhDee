@@ -34,7 +34,7 @@ class _BreedsScreenState extends State<BreedsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffebebeb),
+      backgroundColor: Provider.of<UserProvider>(context).color.background,
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Color(0xffc27335),

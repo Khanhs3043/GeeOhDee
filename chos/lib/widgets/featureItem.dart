@@ -3,8 +3,10 @@ import 'package:chos/services/dogService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../models/dog.dart';
+import '../providers/userProvider.dart';
 
 class FeatureItem extends StatelessWidget {
    FeatureItem({super.key, required this.dog});
@@ -22,7 +24,7 @@ class FeatureItem extends StatelessWidget {
         width: 150,
         height: 200,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Provider.of<UserProvider>(context).color.background2,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [BoxShadow(
                 blurRadius: 10,
@@ -48,7 +50,8 @@ class FeatureItem extends StatelessWidget {
               const SizedBox(height: 10,),
               Text('${dog.name}',style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
+                color: Provider.of<UserProvider>(context).color.text
               ),overflow: TextOverflow.ellipsis,),
               //const SizedBox(height: 10,),
 
@@ -59,7 +62,10 @@ class FeatureItem extends StatelessWidget {
               child: Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Icon(Icons.pets_sharp,color: Colors.brown,size: 20,),
-                  Expanded(child: Text(' ${dog.breedGroup}',style: TextStyle(fontSize: 16),overflow: TextOverflow.ellipsis,)),
+                  Expanded(child: Text(' ${dog.breedGroup}',
+                    style: TextStyle(fontSize: 16,
+                      color: Provider.of<UserProvider>(context).color.text,
+                  ),overflow: TextOverflow.ellipsis,)),
                 ],
               ),
             )

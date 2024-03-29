@@ -5,8 +5,10 @@ import 'package:chos/services/dogService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../models/dog.dart';
+import '../providers/userProvider.dart';
 class BreedItem extends StatelessWidget {
    BreedItem({super.key,required this.dog});
   Dog dog;
@@ -20,7 +22,7 @@ class BreedItem extends StatelessWidget {
         margin: EdgeInsets.only(top: 15,left: 20,right: 20),
         padding: EdgeInsets.only(right:20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Provider.of<UserProvider>(context).color.background2,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [BoxShadow(
             blurRadius: 10,
@@ -50,17 +52,18 @@ class BreedItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${dog.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),),
+                    Text('${dog.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,
+                    color: Provider.of<UserProvider>(context).color.text),),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Height',style: TextStyle(color: Colors.grey,fontSize: 16),),
-                        Text('${dog.height} cm',style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text('${dog.height} cm',style: TextStyle(color: Provider.of<UserProvider>(context).color.text,fontSize: 16),),
                       ],
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Weight',style: TextStyle(color: Colors.grey,fontSize: 16),),
-                        Text('${dog.weight} kg',style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text('${dog.weight} kg',style: TextStyle(color: Provider.of<UserProvider>(context).color.text,fontSize: 16),),
                       ],
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +72,7 @@ class BreedItem extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 10),
                           child: Text('Origin',style: TextStyle(color: Colors.grey,fontSize: 16),),
                         ),
-                        Expanded(child: Text('${dog.origin}',style: TextStyle(color: Colors.black,fontSize: 16,overflow: TextOverflow.ellipsis),textDirection: TextDirection.rtl,)),
+                        Expanded(child: Text('${dog.origin}',style: TextStyle(color: Provider.of<UserProvider>(context).color.text,fontSize: 16,overflow: TextOverflow.ellipsis),textDirection: TextDirection.rtl,)),
                       ],
                     )
                   ],

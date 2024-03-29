@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }, icon: const Icon(Icons.camera_alt,size: 30,color: Colors.grey,)))
                     ]
                   )),
-              Text('${user.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+              Text('${user.user?.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: user.color.text),),
               const SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
+                  color: user.color.background2,
                   boxShadow: [BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     offset: Offset(0,4),
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        mText(text: 'Name',color: Colors.black),
+                        mText(text: 'Name',color: user.color.text),
                         mText(text: '${user.user?.name}',),
                       ],
                     ),
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        mText(text: 'Email',color: Colors.black),
+                        mText(text: 'Email',color: user.color.text),
                         mText(text: '${user.user?.email}',),
                       ],
                     ),
@@ -113,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        mText(text: 'Gender',color: Colors.black),
+                        mText(text: 'Gender',color: user.color.text),
                         mText(text: '${user.user?.gender}',),
                       ],
                     ),
@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        mText(text: 'Date of birth',color: Colors.black,),
+                        mText(text: 'Date of birth',color:user.color.text,),
                         mText(text: user.user?.dob==null?'No information':'${DateFormat('dd/MM/yyy').format(user.user!.dob!)}',),
                       ],
                     ),
@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Colors.white,
+                    color:user.color.background2,
                     boxShadow: [BoxShadow(
                         color: Colors.black.withOpacity(0.1),
                         offset: Offset(0,4),
@@ -149,8 +149,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        mText(text: 'Dark mode',color: Colors.black),
-                        SizedBox(height:35,child: Switch(value: false, onChanged: (_){})),
+                        mText(text: 'Dark mode',color: user.color.text),
+                        SizedBox(height:35,
+                            child: Switch(
+                              activeColor: Colors.blueGrey,
+                                value: user.isDark, onChanged: (val){
+                          user.switchTheme();
+                        })),
                       ],
                     ),
                     Container(margin:EdgeInsets.symmetric(vertical: 10),color: Colors.grey.shade400,height: 1,width: MediaQuery.sizeOf(context).width,),
@@ -181,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          mText(text: 'Log out',color: Colors.black,),
+                          mText(text: 'Log out',color: user.color.text,),
                           const Icon(
                             Icons.power_settings_new_outlined,
                             color: Colors.red,

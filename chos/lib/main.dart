@@ -1,3 +1,4 @@
+import 'package:chos/models/myColor.dart';
 import 'package:chos/providers/userProvider.dart';
 import 'package:chos/screens/controlScreen.dart';
 import 'package:chos/screens/loginScreen.dart';
@@ -47,7 +48,6 @@ class _DeeOhGeeState extends State<DeeOhGee> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

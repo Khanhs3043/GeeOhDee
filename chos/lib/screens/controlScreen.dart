@@ -1,3 +1,4 @@
+import 'package:chos/models/myColor.dart';
 import 'package:chos/models/myUser.dart';
 import 'package:chos/providers/userProvider.dart';
 import 'package:chos/screens/profileScreen.dart';
@@ -47,10 +48,10 @@ class _ControlScreenState extends State<ControlScreen> {
   Widget build(BuildContext context) {
     var screens = [HomeScreen(), FavoriteScreen(), ProfileScreen()];
     return Scaffold(
-      backgroundColor: Color(0xffededed),
+      backgroundColor: Provider.of<UserProvider>(context).color.background,
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
-        backgroundColor: Color(0xfaffffff),
+        backgroundColor: Provider.of<UserProvider>(context).color.background2,
         currentIndex: selectedIndex,
         selectedItemColor: Color(0xfad26339),
         unselectedItemColor: Color(0xfa8a8a8a),
